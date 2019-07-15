@@ -46,11 +46,7 @@ namespace RecipeRolodex.ViewModels
                 });
                 
             }
-            /*RecipeTypes.Add(new SelectListItem
-            {
-                Value = ((int)RecipeType.Appetizer).ToString(),
-                Text = (RecipeType.Appetizer).ToString()
-            });*/
+        
         }
     }
 }
