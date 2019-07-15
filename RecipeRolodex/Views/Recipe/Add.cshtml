@@ -8,36 +8,43 @@
     <div class="form-group">
         <label asp-for="Title">Title:</label>
         <input type="text" class="form-control" asp-for="Title" />
+        <span class="alert-danger" asp-validation-for="Title"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Description">Short Description:</label>
         <input type="text" class="form-control" asp-for="Description" />
+        <span class="alert-danger" asp-validation-for="Description"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Type">Type of Dish:</label>
         <select asp-for="Type" asp-items="Model.RecipeTypes"></select>
+        <span class="alert-danger" asp-validation-for="Type"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Time">Total Time of Complete:</label>
+        <label asp-for="Time">Total Time of Complete (In minutes):</label>
         <input type="number" class="form-control" asp-for="Time" />
+        <span class="alert-danger" asp-validation-for="Time"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Serve">Serve:</label>
         <input type="number" class="form-control" asp-for="Serve" />
+        <span class="alert-danger" asp-validation-for="Serve"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Ingredients">Ingredients (Please separate with comma):</label>
         <textarea asp-for="Ingredients" class="form-control"></textarea>
+        <span class="alert-danger" asp-validation-for="Ingredients"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="Source">Where to Find this Recipe:(bookname/pagenumber/etc...)</label>
         <input type="text" class="form-control" asp-for="Source" />
+        <span class="alert-danger" asp-validation-for="Source"></span>
     </div>
 
     <input type="submit" value="Enter Recipe" />

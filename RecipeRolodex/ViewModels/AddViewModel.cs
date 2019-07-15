@@ -2,6 +2,7 @@
 using RecipeRolodex.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,18 +12,23 @@ namespace RecipeRolodex.ViewModels
     {
         public int ID { get; set; }
 
+        [Required]
         public string Title { get; set; }
 
         public string Description { get; set; }
 
+        [Required]
+        [Range(10,1500,ErrorMessage="Please enter a cooking time between 10 minutes and 1500 minutes (24 hours)")]
         public int Time { get; set; }
 
         public int Serve { get; set; }
 
+        [Required]
         public string Source { get; set; }
 
         //An enum of types of dishes that the user can select from
         //Store the Choice of type
+        [Required]
         public RecipeType Type { get; set; }
 
         //Hold the possible choices
