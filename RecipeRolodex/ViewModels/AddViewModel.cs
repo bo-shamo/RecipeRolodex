@@ -48,5 +48,31 @@ namespace RecipeRolodex.ViewModels
             }
         
         }
+
+        public static Recipe CreateRecipe(AddViewModel addViewModel)
+        {
+           
+            Recipe newrecipe = new Recipe
+            {
+                Title = addViewModel.Title,
+                Description = addViewModel.Description,
+                Type = addViewModel.Type,
+                Time = addViewModel.Time,
+                Serve = addViewModel.Serve,
+                Source = addViewModel.Source
+            };
+            return newrecipe;
+        }
+
+        //Creates each individual ingredient, need to find a better way to do this
+        public static Ingredient CreateIngredient(string oneIngredient, int recipeID)
+        {
+            Ingredient ingredient = new Ingredient
+            {
+                Name = oneIngredient,
+                RecipeID = recipeID
+            };
+            return ingredient;
+        }
     }
 }

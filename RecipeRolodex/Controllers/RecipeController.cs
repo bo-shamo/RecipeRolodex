@@ -43,15 +43,7 @@ namespace RecipeRolodex.Controllers
             if (ModelState.IsValid)
             {
                 //Make recipe 
-                Recipe newRecipe = new Recipe
-                {
-                    Title = addViewModel.Title,
-                    Description = addViewModel.Description,
-                    Type = addViewModel.Type,
-                    Time = addViewModel.Time,
-                    Serve = addViewModel.Serve,
-                    Source = addViewModel.Source
-                };
+                var newRecipe = AddViewModel.CreateRecipe(addViewModel);
                 context.Recipes.Add(newRecipe);
                 context.SaveChanges();
 
@@ -60,11 +52,7 @@ namespace RecipeRolodex.Controllers
                 string[] ingredients = addViewModel.Ingredients.Split(",");
                 foreach (var ingredient in ingredients)
                 {
-                    Ingredient newIngredient = new Ingredient
-                    {
-                        Name = ingredient,
-                        RecipeID = newRecipe.ID
-                    };
+                    var newIngredient = AddViewModel.CreateIngredient(ingredient, newRecipe.ID);
                     context.Ingredients.Add(newIngredient);
                 }
                 
