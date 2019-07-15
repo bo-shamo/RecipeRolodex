@@ -18,8 +18,8 @@ namespace RecipeRolodex.ViewModels
         public string Description { get; set; }
 
         [Required]
-        [Range(10,1500,ErrorMessage="Please enter a cooking time between 10 minutes and 1500 minutes (24 hours)")]
-        public int Time { get; set; }
+        //[Range(10,1500,ErrorMessage="Please enter a cooking time between 10 minutes and 1500 minutes (24 hours)")]
+        public double Time { get; set; }
 
         public int Serve { get; set; }
 
@@ -57,13 +57,17 @@ namespace RecipeRolodex.ViewModels
 
         public static Recipe CreateRecipe(AddViewModel addViewModel)
         {
-           
+            //If the user types in
+            if (addViewModel.Time < 24)
+            {
+                addViewModel.Time = addViewModel.Time*60;
+            }
             Recipe newrecipe = new Recipe
             {
                 Title = addViewModel.Title,
                 Description = addViewModel.Description,
                 Type = addViewModel.Type,
-                Time = addViewModel.Time,
+                Time = (int)addViewModel.Time,
                 Serve = addViewModel.Serve,
                 Source = addViewModel.Source
             };
