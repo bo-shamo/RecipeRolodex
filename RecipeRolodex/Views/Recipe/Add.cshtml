@@ -1,29 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RecipeRolodex.ViewModels.AddViewModel
 @{
 }
 
 <form method="POST">
-    <label for="title">Title:</label>
-    <input type="text" name="title" />
+    <div class="form-group">
+        <label asp-for="Title">Title:</label>
+        <input type="text" class="form-control" asp-for="Title" />
+    </div>
 
-    <label for="description">Short Description:</label>
-    <input type="text" name="description" />
+    <div class="form-group">
+        <label asp-for="Description">Short Description:</label>
+        <input type="text" class="form-control" asp-for="Description" />
+    </div>
 
-    <label for="type">Type of Dish:</label>
-    <input type="text" name="type" />
+    <div class="form-group">
+        <label asp-for="Type">Type of Dish:</label>
+        <select asp-for="Type" asp-items="Model.RecipeTypes"></select>
+    </div>
 
-    <label for="totaltime">Total Time of Complete:</label>
-    <input type="number" name="totaltime" />
-    <label for="serve">Serve:</label>
-    <input type="number" name="serve" />
+    <div class="form-group">
+        <label asp-for="Time">Total Time of Complete:</label>
+        <input type="number" class="form-control" asp-for="Time" />
+    </div>
 
-    <label for="ingredients">Ingredients (Please separate with comma):</label>
-    <textarea name="ingredients"></textarea>
+    <div class="form-group">
+        <label asp-for="Serve">Serve:</label>
+        <input type="number" class="form-control" asp-for="Serve" />
+    </div>
 
-    <label for="source">Where to Find this Recipe:(bookname/pagenumber/etc...)</label>
-    <input type="text" name="source" />
+    <div class="form-group">
+        <label asp-for="Ingredients">Ingredients (Please separate with comma):</label>
+        <textarea asp-for="Ingredients" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Source">Where to Find this Recipe:(bookname/pagenumber/etc...)</label>
+        <input type="text" class="form-control" asp-for="Source" />
+    </div>
 
     <input type="submit" value="Enter Recipe" />
 </form>

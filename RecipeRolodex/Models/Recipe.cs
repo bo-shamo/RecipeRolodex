@@ -16,9 +16,10 @@ namespace RecipeRolodex.Models
         public string Source { get; set; }
         //An enum of types of dishes that the user can select from
         public RecipeType Type { get; set; }
+
         //One Recipe to Many Ingredients relationship
-        public int IngredientID { get; set; }
-        public Ingredient Ingredient { get; set; }
+        //For storing the list of ingredients
+        IList<Ingredient> Ingredients { get; set; }
 
         //Constructors
         public Recipe() { }
