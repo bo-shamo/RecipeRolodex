@@ -33,26 +33,26 @@ namespace RecipeRolodex.Controllers
         //Add a Recipe to your list
         public IActionResult Add()
         {
-            AddViewModel addViewModel = new AddViewModel();
-            return View(addViewModel);
+            AddEditRecipeViewModel addEditRecipeViewModel = new AddEditRecipeViewModel();
+            return View(addEditRecipeViewModel);
         }
 
         [HttpPost]
-        public IActionResult Add(AddViewModel addViewModel)
+        public IActionResult Add(AddEditRecipeViewModel addEditRecipeViewModel)
         {
             if (ModelState.IsValid)
             {
                 //Make recipe 
-                var newRecipe = AddViewModel.CreateRecipe(addViewModel);
+                var newRecipe = AddEditRecipeViewModel.CreateRecipe(addEditRecipeViewModel);
                 context.Recipes.Add(newRecipe);
                 context.SaveChanges();
 
                 
                 //Make Ingredients
-                string[] ingredients = addViewModel.Ingredients.Split(",");
+                string[] ingredients = addEditRecipeViewModel.Ingredients.Split(",");
                 foreach (var ingredient in ingredients)
                 {
-                    var newIngredient = AddViewModel.CreateIngredient(ingredient, newRecipe.ID);
+                    var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredient, newRecipe.ID);
                     context.Ingredients.Add(newIngredient);
                 }
                 
@@ -60,13 +60,34 @@ namespace RecipeRolodex.Controllers
                 return Redirect("/");
             }
 
-            return View(addViewModel);
+            return View(addEditRecipeViewModel);
         }
 
         //Edit a recipe or after you completed one
-        public IActionResult Edit()
+        public IActionResult Edit(int recipeId)
         {
-            return View();
+            //Get the recipe that is assoitated with the id
+            IList<Ingredient> editIngredients = context.Ingredients.Include(p=> p.Recipe).Where(p => p.RecipeID == recipeId).ToList();
+
+            //Create a AddEditRecipeViewModel
+            AddEditRecipeViewModel editRecipe = AddEditRecipeViewModel.ConvertToViewModel(editIngredients);
+
+            //pass that into the view
+            return View(editRecipe);
+        }
+
+        //Submittion of the edit
+        [HttpPost]
+        public IActionResult Edit(AddEditRecipeViewModel addEditRecipeViewModel)
+        {
+            //Check if edit was successful
+            if (ModelState.IsValid)
+            {
+                return Redirect("/");
+            }
+
+            //reposted the form it there was errors
+            return View(addEditRecipeViewModel);
         }
 
         //Show one Recipe in detail

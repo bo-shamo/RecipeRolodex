@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RecipeRolodex.ViewModels
 {
-    public class AddViewModel
+    public class AddEditRecipeViewModel
     {
         public int ID { get; set; }
 
@@ -40,7 +40,7 @@ namespace RecipeRolodex.ViewModels
 
         //public Ingredient Ingredient { get; set; }
 
-        public AddViewModel()
+        public AddEditRecipeViewModel()
         {
             RecipeTypes = new List<SelectListItem>();
             foreach (string str in Enum.GetNames(typeof(RecipeType)))
@@ -55,21 +55,21 @@ namespace RecipeRolodex.ViewModels
         
         }
 
-        public static Recipe CreateRecipe(AddViewModel addViewModel)
+        public static Recipe CreateRecipe(AddEditRecipeViewModel addEditRecipeViewModel)
         {
             //If the user types in
-            if (addViewModel.Time < 24)
+            if (addEditRecipeViewModel.Time < 24)
             {
-                addViewModel.Time = addViewModel.Time*60;
+                addEditRecipeViewModel.Time = addEditRecipeViewModel.Time*60;
             }
             Recipe newrecipe = new Recipe
             {
-                Title = addViewModel.Title,
-                Description = addViewModel.Description,
-                Type = addViewModel.Type,
-                Time = (int)addViewModel.Time,
-                Serve = addViewModel.Serve,
-                Source = addViewModel.Source
+                Title = addEditRecipeViewModel.Title,
+                Description = addEditRecipeViewModel.Description,
+                Type = addEditRecipeViewModel.Type,
+                Time = (int)addEditRecipeViewModel.Time,
+                Serve = addEditRecipeViewModel.Serve,
+                Source = addEditRecipeViewModel.Source
             };
             return newrecipe;
         }
@@ -83,6 +83,21 @@ namespace RecipeRolodex.ViewModels
                 RecipeID = recipeID
             };
             return ingredient;
+        }
+
+        //Creates and addEditRecipeViewModel from a recipe class constructor
+        public static AddEditRecipeViewModel ConvertToViewModel(IList<Ingredient> recipe)
+        {
+            //Create Ingredient string using string builder
+
+            //Recreate accurate Time
+
+            //Put it all in the ViewModel
+            AddEditRecipeViewModel viewModel = new AddEditRecipeViewModel
+            {
+
+            };
+            return viewModel;
         }
     }
 }
