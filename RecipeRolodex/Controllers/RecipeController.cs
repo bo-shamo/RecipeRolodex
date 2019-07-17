@@ -66,14 +66,23 @@ namespace RecipeRolodex.Controllers
         //Edit a recipe or after you completed one
         public IActionResult Edit(int recipeId)
         {
+            
             //Get the recipe that is assoitated with the id
-            IList<Ingredient> editIngredients = context.Ingredients.Include(p=> p.Recipe).Where(p => p.RecipeID == recipeId).ToList();
+            IList<Ingredient> editIngredients = context.Ingredients.Include(p => p.Recipe).Where(p => p.RecipeID == recipeId).ToList();
 
             //Create a AddEditRecipeViewModel
             AddEditRecipeViewModel editRecipe = AddEditRecipeViewModel.ConvertToViewModel(editIngredients);
 
+            //For now delete the entires out of the database
+            foreach (Ingredient removeIngredient in editIngredients)
+            {
+                context.Ingredients.Remove(removeIngredient);
+            }
+            context.SaveChanges();
+
             //pass that into the view
             return View(editRecipe);
+            
         }
 
         //Submittion of the edit
@@ -83,6 +92,17 @@ namespace RecipeRolodex.Controllers
             //Check if edit was successful
             if (ModelState.IsValid)
             {
+                var editRecipe = AddEditRecipeViewModel.CreateRecipe(addEditRecipeViewModel);
+                context.Recipes.Update(editRecipe);
+
+                //Make Ingredients
+                string[] ingredients = addEditRecipeViewModel.Ingredients.Split(",");
+                foreach (var ingredient in ingredients)
+                {
+                    var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredient, editRecipe.ID);
+                    context.Ingredients.Add(newIngredient);
+                }
+                context.SaveChanges();
                 return Redirect("/");
             }
 

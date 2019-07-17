@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace RecipeRolodex.ViewModels
@@ -64,6 +65,7 @@ namespace RecipeRolodex.ViewModels
             }
             Recipe newrecipe = new Recipe
             {
+                ID = addEditRecipeViewModel.ID,
                 Title = addEditRecipeViewModel.Title,
                 Description = addEditRecipeViewModel.Description,
                 Type = addEditRecipeViewModel.Type,
@@ -89,15 +91,40 @@ namespace RecipeRolodex.ViewModels
         public static AddEditRecipeViewModel ConvertToViewModel(IList<Ingredient> recipe)
         {
             //Create Ingredient string using string builder
-
+            StringBuilder sb = new StringBuilder();
+            Boolean first = true;
+            foreach (Ingredient ingredient in recipe)
+            {
+                if (first)
+                {
+                    sb.Append(ingredient.Name);
+                    first = false;
+                }
+                else
+                {
+                    sb.Append(", " + ingredient.Name);
+                }
+                
+            }
             //Recreate accurate Time
-
+            if(recipe[1].Recipe.Time > 120)
+            {
+                recipe[0].Recipe.Time = recipe[0].Recipe.Time / 60;
+            }
             //Put it all in the ViewModel
             AddEditRecipeViewModel viewModel = new AddEditRecipeViewModel
             {
-
+                ID = recipe[0].RecipeID,
+                Title = recipe[0].Recipe.Title,
+                Description = recipe[0].Recipe.Description,
+                Type = recipe[0].Recipe.Type,
+                Time = recipe[0].Recipe.Time,
+                Serve = recipe[0].Recipe.Serve,
+                Source = recipe[0].Recipe.Source,
+                Ingredients = sb.ToString()
             };
             return viewModel;
         }
+
     }
 }
