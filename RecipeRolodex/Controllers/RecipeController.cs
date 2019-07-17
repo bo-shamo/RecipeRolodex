@@ -111,9 +111,12 @@ namespace RecipeRolodex.Controllers
         }
 
         //Show one Recipe in detail
-        public IActionResult Select()
+        public IActionResult Detail(int recipeId)
         {
-            return View();
+            //Get the list of Ingredients
+            IList<Ingredient> editIngredients = context.Ingredients.Include(p => p.Recipe).Where(p => p.RecipeID == recipeId).ToList();
+            DetailRecipeViewModel detailRecipeViewModel = new DetailRecipeViewModel(editIngredients);
+            return View(detailRecipeViewModel);
         }
         //Remove recipes from your account
         public IActionResult Remove()

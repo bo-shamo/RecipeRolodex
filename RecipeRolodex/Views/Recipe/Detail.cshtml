@@ -1,0 +1,41 @@
+﻿@model RecipeRolodex.ViewModels.DetailRecipeViewModel
+@{
+}
+
+<h1 class="center-block">@Model.Title</h1>
+<hr />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm">Time to Complete: @Model.Time</div>
+        <div class="col-sm">Serve: @Model.Serve</div>
+        <div class="col-sm">Type: @Model.Type</div>
+    </div>
+</div>
+<br />
+    <div class="row">
+        <p>@Model.Description</p>
+    </div>
+    
+    <table class="table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Ingredient</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ingredient in Model.Ingredients)
+            {
+                <tr>
+                    <th scope="col">@ingredient.Name</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row justify-content-center">
+        <div class="col-4">Source: @Model.Source</div>
+    </div>
+
+    <a asp-controller="Recipe" asp-action="Index">Go Back to Home</a>
+
+
