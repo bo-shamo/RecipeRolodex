@@ -27,7 +27,7 @@
             <td><a asp-controller="Recipe" asp-action="Detail" asp-route-recipeid="@recipe.ID">@recipe.Title</a></td>
             <td>@recipe.Description</td>
             <td>@recipe.Source</td>
-            <td><a asp-controller="Recipe" asp-action="Edit" asp-route-recipeid="@recipe.ID">Edit</a></td>
+            <td><a asp-controller="Recipe" asp-action="Edit" asp-route-recipeId="@recipe.ID" class="btn-outline-primary">Edit</a></td>
         </tr>
     }
 </table>

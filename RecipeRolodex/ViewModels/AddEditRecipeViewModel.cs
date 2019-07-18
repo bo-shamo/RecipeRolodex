@@ -102,12 +102,12 @@ namespace RecipeRolodex.ViewModels
                 }
                 else
                 {
-                    sb.Append(", " + ingredient.Name);
+                    sb.Append("," + ingredient.Name);
                 }
                 
             }
             //Recreate accurate Time
-            if(recipe[1].Recipe.Time > 120)
+            if(recipe[0].Recipe.Time > 120)
             {
                 recipe[0].Recipe.Time = recipe[0].Recipe.Time / 60;
             }

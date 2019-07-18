@@ -1,8 +1,18 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RecipeRolodex.ViewModels.RemoveRecipeViewModel
 @{
 }
 
-<!--Base form for getting an idea of what the model should be like-->
+<h1>Select the Recipes you want Deleted</h1>
 
+<form method="post">
+    @foreach (var recipe in Model.Recipes)
+    {
+    <div class="form-control">
+        
+        <input type="checkbox" name="recipeIds" id="@recipe.ID" value="@recipe.ID" />
+        <label for="@recipe.ID">@recipe.Title</label>
+    </div>
+        <br/>
+    }
+    <input type="submit" Value="Delete these Recipes" />
+</form>

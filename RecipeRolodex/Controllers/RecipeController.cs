@@ -115,13 +115,49 @@ namespace RecipeRolodex.Controllers
         {
             //Get the list of Ingredients
             IList<Ingredient> editIngredients = context.Ingredients.Include(p => p.Recipe).Where(p => p.RecipeID == recipeId).ToList();
-            DetailRecipeViewModel detailRecipeViewModel = new DetailRecipeViewModel(editIngredients);
-            return View(detailRecipeViewModel);
+            if(editIngredients.Count() != 0)
+            {
+                DetailRecipeViewModel detailRecipeViewModel = new DetailRecipeViewModel(editIngredients);
+                return View(detailRecipeViewModel);
+            }
+            else
+            {
+                return Redirect("/");
+            }
+            
+
         }
         //Remove recipes from your account
         public IActionResult Remove()
         {
-            return View();
+            IList<Recipe> removeRecipes = context.Recipes.ToList();
+            RemoveRecipeViewModel removeRecipeViewModel = new RemoveRecipeViewModel()
+            {
+                Recipes = removeRecipes
+            };
+            return View(removeRecipeViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Remove(int[] recipeIds)
+        {
+            if(recipeIds.Length != 0)
+            {
+                foreach (int recipeId in recipeIds)
+                {
+                    Recipe recipe = context.Recipes.Single(p => p.ID == recipeId);
+                    context.Recipes.Remove(recipe);
+                    List<Ingredient> ingredients = context.Ingredients.Where(p => p.RecipeID == recipe.ID).ToList();
+                    foreach(var ingredient in ingredients)
+                    {
+                        context.Ingredients.Remove(ingredient);
+                    }
+                    
+                }
+                context.SaveChanges();
+            }
+            
+            return Redirect("/");
         }
     }
 }
