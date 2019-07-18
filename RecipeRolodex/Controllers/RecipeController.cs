@@ -14,7 +14,7 @@ namespace RecipeRolodex.Controllers
 {
     public class RecipeController : Controller
     {
-
+        #region Database
         //Database Initalization in website
         private ApplicationDbContext context;
 
@@ -22,14 +22,16 @@ namespace RecipeRolodex.Controllers
         {
             context = dbContext;
         }
-
+        #endregion
+        #region Index
         //(Eventual) Users Storage Homepage
         public IActionResult Index()
         {
             List<Recipe> recipes = context.Recipes.ToList();
             return View(recipes);
         }
-
+        #endregion
+        #region Add
         //Add a Recipe to your list
         public IActionResult Add()
         {
@@ -62,7 +64,8 @@ namespace RecipeRolodex.Controllers
 
             return View(addEditRecipeViewModel);
         }
-
+        #endregion
+        #region Edit
         //Edit a recipe or after you completed one
         public IActionResult Edit(int recipeId)
         {
@@ -109,7 +112,8 @@ namespace RecipeRolodex.Controllers
             //reposted the form it there was errors
             return View(addEditRecipeViewModel);
         }
-
+        #endregion
+        #region Detail
         //Show one Recipe in detail
         public IActionResult Detail(int recipeId)
         {
@@ -127,6 +131,8 @@ namespace RecipeRolodex.Controllers
             
 
         }
+        #endregion
+        #region Remove
         //Remove recipes from your account
         public IActionResult Remove()
         {
@@ -159,5 +165,6 @@ namespace RecipeRolodex.Controllers
             
             return Redirect("/");
         }
+        #endregion
     }
 }
