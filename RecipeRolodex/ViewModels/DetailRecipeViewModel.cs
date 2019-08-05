@@ -22,6 +22,10 @@ namespace RecipeRolodex.ViewModels
         //For storing the list of ingredients
         public IList<Ingredient> Ingredients { get; set; }
 
+        /// <summary>
+        /// Takes in the ingredients class with a recipe object attached. Maps the values to the ViewModel
+        /// </summary>
+        /// <param name="ingredients"></param>
         public DetailRecipeViewModel(IList<Ingredient> ingredients)
         {
             ID = ingredients[0].Recipe.ID;

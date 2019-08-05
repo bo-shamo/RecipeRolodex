@@ -8,8 +8,6 @@ using RecipeRolodex.Data;
 using RecipeRolodex.Models;
 using RecipeRolodex.ViewModels;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace RecipeRolodex.Controllers
 {
     public class RecipeController : Controller
@@ -38,7 +36,12 @@ namespace RecipeRolodex.Controllers
             AddEditRecipeViewModel addEditRecipeViewModel = new AddEditRecipeViewModel();
             return View(addEditRecipeViewModel);
         }
-
+        
+        /// <summary>
+        /// Receives the form submittion and checks validation
+        /// </summary>
+        /// <param name="addEditRecipeViewModel"></param>
+        /// <returns>Either the form with errors displayed or the index view</returns>
         [HttpPost]
         public IActionResult Add(AddEditRecipeViewModel addEditRecipeViewModel)
         {
@@ -49,8 +52,9 @@ namespace RecipeRolodex.Controllers
                 context.Recipes.Add(newRecipe);
                 context.SaveChanges();
 
-                
+
                 //Make Ingredients
+                //TODO: make better ingredient handler with javascript
                 string[] ingredients = addEditRecipeViewModel.Ingredients.Split(",");
                 foreach (var ingredient in ingredients)
                 {
@@ -66,7 +70,11 @@ namespace RecipeRolodex.Controllers
         }
         #endregion
         #region Edit
-        //Edit a recipe or after you completed one
+        /// <summary>
+        /// Takes in the id for a recipe and converts it into the AddEditRecipeViewModel type for displaying
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <returns>the edit form view with data already filled in to the form</returns>
         public IActionResult Edit(int recipeId)
         {
             
@@ -77,6 +85,7 @@ namespace RecipeRolodex.Controllers
             AddEditRecipeViewModel editRecipe = AddEditRecipeViewModel.ConvertToViewModel(editIngredients);
 
             //For now delete the entires out of the database
+            //TODO:handle ingredients without delete all of them
             foreach (Ingredient removeIngredient in editIngredients)
             {
                 context.Ingredients.Remove(removeIngredient);
@@ -88,7 +97,11 @@ namespace RecipeRolodex.Controllers
             
         }
 
-        //Submittion of the edit
+        /// <summary>
+        /// Recieves the form post request and handles the data handling to the model if there is no errors
+        /// </summary>
+        /// <param name="addEditRecipeViewModel"></param>
+        /// <returns>either the form again with errors or the index view with edits saved</returns>
         [HttpPost]
         public IActionResult Edit(AddEditRecipeViewModel addEditRecipeViewModel)
         {
@@ -114,7 +127,11 @@ namespace RecipeRolodex.Controllers
         }
         #endregion
         #region Detail
-        //Show one Recipe in detail
+        /// <summary>
+        /// Shows an indepth view of the recipe so people can see all the details
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <returns>Tf there is ingredients to the recipe, it returns the detailed view</returns>
         public IActionResult Detail(int recipeId)
         {
             //Get the list of Ingredients
@@ -133,7 +150,10 @@ namespace RecipeRolodex.Controllers
         }
         #endregion
         #region Remove
-        //Remove recipes from your account
+        /// <summary>
+        /// Grab all the recipes available in the database and shows them for removal
+        /// </summary>
+        /// <returns>view with all the recipes shown</returns>
         public IActionResult Remove()
         {
             IList<Recipe> removeRecipes = context.Recipes.ToList();
@@ -144,6 +164,11 @@ namespace RecipeRolodex.Controllers
             return View(removeRecipeViewModel);
         }
 
+        /// <summary>
+        /// Takes an array of recipes to remove and takes out the recipes and their ingredients
+        /// </summary>
+        /// <param name="recipeIds"></param>
+        /// <returns>index view with the selected recipes removed</returns>
         [HttpPost]
         public IActionResult Remove(int[] recipeIds)
         {

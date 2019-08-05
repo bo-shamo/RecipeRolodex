@@ -41,6 +41,9 @@ namespace RecipeRolodex.ViewModels
 
         //public Ingredient Ingredient { get; set; }
 
+        /// <summary>
+        /// Creates a blank view model for the intial display form
+        /// </summary>
         public AddEditRecipeViewModel()
         {
             RecipeTypes = new List<SelectListItem>();
@@ -56,6 +59,11 @@ namespace RecipeRolodex.ViewModels
         
         }
 
+        /// <summary>
+        /// Creates a recipe object out of the view Model
+        /// </summary>
+        /// <param name="addEditRecipeViewModel"></param>
+        /// <returns>recipe object</returns>
         public static Recipe CreateRecipe(AddEditRecipeViewModel addEditRecipeViewModel)
         {
             //If the user types in
@@ -76,7 +84,8 @@ namespace RecipeRolodex.ViewModels
             return newrecipe;
         }
 
-        //Creates each individual ingredient, need to find a better way to do this
+        //Creates each individual ingredient, 
+        //TODO: need to find a better way to do this without using strings
         public static Ingredient CreateIngredient(string oneIngredient, int recipeID)
         {
             Ingredient ingredient = new Ingredient
@@ -107,6 +116,7 @@ namespace RecipeRolodex.ViewModels
                 
             }
             //Recreate accurate Time
+            //TODO:Use logic in views to show shorten time and not saving them
             if(recipe[0].Recipe.Time > 120)
             {
                 recipe[0].Recipe.Time = recipe[0].Recipe.Time / 60;
