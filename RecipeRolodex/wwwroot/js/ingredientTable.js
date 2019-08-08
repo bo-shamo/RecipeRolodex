@@ -1,29 +1,25 @@
 ﻿//Functions to enable ingredient table manipulation for add and edit views
 
-//Functions
-//Add row
-function addRow(event) {
-    //new row object
-    //let newRow = '<tr> < td > <button type="button" class="btn btn-default plus">+</button></td><td><button type="button" class="btn btn-default minus">-</button></td><td><input type="text" class="form-control" /></td></tr>';
-    console.log('plus');
-}
-
-//Remove Row
-function removeRow(evt) {
-
-}
-
-//Check if this is the last row and returns true if safe to remove
-function canRemove(evt) {
-
-}
-
-
-//$('.table .plus').on('click', addRow(event));
 //Event Handlers
-//$('.table').on('click', $('.plus'), addRow());
-var plusButton = document.getElementsByClassName('plus');
-plusButton.addEventListener("click",addRow());
-console.log(plusButton);
+$('.table').on('click', '.plus', function addRow(evt) {
+    //HTML of the new table row
+    var newRow = `
+        <tr>
+            <td><button type="button" class="btn btn-default plus">+</button></td>
+            <td><button type="button" class="btn btn-default minus">-</button></td>
+            <td><input type="text" class="form-control" /></td>
+        </tr>`;
+    //get the clicked element and get the entire row DOM
+    var row = $(evt.target).parents('tr');
+    //Add the newRow below the selected row
+    row.after(newRow);
+});
 
-//$('.table').on('click', $('.minus'), removeRow(event));
+$('.table').on('click', '.minus', function removeRow(evt) {
+    //Get the minus button clicked and grab the entire row DOM
+    var row = $(evt.target).parents('tr');
+    //Removes the row only if there is more than one row so the entire table is not deleted
+    if (row.siblings().length > 1) {
+        row.remove();
+    }
+});
