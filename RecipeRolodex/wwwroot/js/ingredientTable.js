@@ -7,7 +7,7 @@ $('.table').on('click', '.plus', function addRow(evt) {
         <tr>
             <td><button type="button" class="btn btn-default plus">+</button></td>
             <td><button type="button" class="btn btn-default minus">-</button></td>
-            <td><input type="text" class="form-control" /></td>
+            <td><input type="text" class="form-control" data-val="true" data-val-required="The IngredientsName field is required." id="IngredientsName" name="IngredientsName" /></td>
         </tr>`;
     //get the clicked element and get the entire row DOM
     var row = $(evt.target).parents('tr');

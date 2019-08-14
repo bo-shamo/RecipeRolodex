@@ -47,10 +47,10 @@
         <tr>
             <td><button type="button" class="btn btn-default plus">+</button></td>
             <td><button type="button" class="btn btn-default minus">-</button></td>
-            <td><input type="text" class="form-control" /></td>
+            <td><input asp-for="IngredientsName" type="text" class="form-control" /></td>
         </tr>
     </table>
-    <span class="alert-danger" asp-validation-for="Ingredients"></span>
+    <span class="alert-danger" asp-validation-for="IngredientsName"></span>
 
     <div class="form-group">
         <label asp-for="Source">Where to Find this Recipe:(bookname/pagenumber/etc...)</label>

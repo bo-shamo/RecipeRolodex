@@ -53,15 +53,21 @@ namespace RecipeRolodex.Controllers
                 context.SaveChanges();
 
 
-                //Make Ingredients
+                /*//Make Ingredients
                 //TODO: make better ingredient handler with javascript
                 string[] ingredients = addEditRecipeViewModel.Ingredients.Split(",");
                 foreach (var ingredient in ingredients)
                 {
                     var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredient, newRecipe.ID);
                     context.Ingredients.Add(newIngredient);
+                }*/
+                foreach (var ingredientName in addEditRecipeViewModel.IngredientsName)
+                {
+                    var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredientName, newRecipe.ID);
+                    context.Ingredients.Add(newIngredient);
                 }
-                
+
+
                 context.SaveChanges();
                 return Redirect("/");
             }
@@ -84,14 +90,6 @@ namespace RecipeRolodex.Controllers
             //Create a AddEditRecipeViewModel
             AddEditRecipeViewModel editRecipe = AddEditRecipeViewModel.ConvertToViewModel(editIngredients);
 
-            //For now delete the entires out of the database
-            //TODO:handle ingredients without delete all of them
-            foreach (Ingredient removeIngredient in editIngredients)
-            {
-                context.Ingredients.Remove(removeIngredient);
-            }
-            context.SaveChanges();
-
             //pass that into the view
             return View(editRecipe);
             
@@ -112,8 +110,8 @@ namespace RecipeRolodex.Controllers
                 context.Recipes.Update(editRecipe);
 
                 //Make Ingredients
-                string[] ingredients = addEditRecipeViewModel.Ingredients.Split(",");
-                foreach (var ingredient in ingredients)
+                //TODO:Check old ingredients and only add new ingredients and remove removed ingredients
+                foreach (var ingredient in addEditRecipeViewModel.IngredientsName)
                 {
                     var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredient, editRecipe.ID);
                     context.Ingredients.Add(newIngredient);

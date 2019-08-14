@@ -36,10 +36,9 @@ namespace RecipeRolodex.ViewModels
         public List<SelectListItem> RecipeTypes { get; set; }
 
         //One Recipe to Many Ingredients relationship
-        public string Ingredients { get; set; }
-        //public int IngredientID { get; set; }
-
-        //public Ingredient Ingredient { get; set; }
+        //public string[] Ingredients { get; set; }
+        [Required]
+        public IList<string> IngredientsName { get; set; }
 
         /// <summary>
         /// Creates a blank view model for the intial display form
@@ -66,11 +65,7 @@ namespace RecipeRolodex.ViewModels
         /// <returns>recipe object</returns>
         public static Recipe CreateRecipe(AddEditRecipeViewModel addEditRecipeViewModel)
         {
-            //If the user types in
-            if (addEditRecipeViewModel.Time < 24)
-            {
-                addEditRecipeViewModel.Time = addEditRecipeViewModel.Time*60;
-            }
+            
             Recipe newrecipe = new Recipe
             {
                 ID = addEditRecipeViewModel.ID,
@@ -96,31 +91,17 @@ namespace RecipeRolodex.ViewModels
             return ingredient;
         }
 
-        //Creates and addEditRecipeViewModel from a recipe class constructor
+        //Creates an addEditRecipeViewModel from a recipe class constructor
+        //For edit view
         public static AddEditRecipeViewModel ConvertToViewModel(IList<Ingredient> recipe)
         {
-            //Create Ingredient string using string builder
-            StringBuilder sb = new StringBuilder();
-            Boolean first = true;
-            foreach (Ingredient ingredient in recipe)
+
+            IList<string> IngredientList = new List<string>();
+            foreach(Ingredient ingredient in recipe)
             {
-                if (first)
-                {
-                    sb.Append(ingredient.Name);
-                    first = false;
-                }
-                else
-                {
-                    sb.Append("," + ingredient.Name);
-                }
-                
+                IngredientList.Add(ingredient.Name);
             }
-            //Recreate accurate Time
-            //TODO:Use logic in views to show shorten time and not saving them
-            if(recipe[0].Recipe.Time > 120)
-            {
-                recipe[0].Recipe.Time = recipe[0].Recipe.Time / 60;
-            }
+
             //Put it all in the ViewModel
             AddEditRecipeViewModel viewModel = new AddEditRecipeViewModel
             {
@@ -131,7 +112,7 @@ namespace RecipeRolodex.ViewModels
                 Time = recipe[0].Recipe.Time,
                 Serve = recipe[0].Recipe.Serve,
                 Source = recipe[0].Recipe.Source,
-                Ingredients = sb.ToString()
+                IngredientsName = IngredientList
             };
             return viewModel;
         }
