@@ -61,7 +61,7 @@ namespace RecipeRolodex.Controllers
                     var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredient, newRecipe.ID);
                     context.Ingredients.Add(newIngredient);
                 }*/
-                foreach (var ingredientName in addEditRecipeViewModel.IngredientsName)
+                foreach (var ingredientName in addEditRecipeViewModel.NewIngredientsName)
                 {
                     var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredientName, newRecipe.ID);
                     context.Ingredients.Add(newIngredient);
@@ -109,13 +109,36 @@ namespace RecipeRolodex.Controllers
                 var editRecipe = AddEditRecipeViewModel.CreateRecipe(addEditRecipeViewModel);
                 context.Recipes.Update(editRecipe);
 
-                //Make Ingredients
-                //TODO:Check old ingredients and only add new ingredients and remove removed ingredients
-                foreach (var ingredient in addEditRecipeViewModel.IngredientsName)
+                //Check ingredients
+
+                //get the old ingredient list
+                IList<Ingredient> prevIngredients = context.Ingredients.Include(p => p.Recipe).Where(p => p.RecipeID == editRecipe.ID).ToList();
+                //Go through each ingredient returned from the form
+                foreach (var ingredient in prevIngredients)
                 {
-                    var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredient, editRecipe.ID);
-                    context.Ingredients.Add(newIngredient);
+                    //Three cases
+                    //edited an ingredient
+                    if (addEditRecipeViewModel.IngredientsID.Contains(ingredient.ID)){
+                        int index = addEditRecipeViewModel.IngredientsID.IndexOf(ingredient.ID);
+                        ingredient.Name = addEditRecipeViewModel.IngredientsName[index];
+                        context.Update(ingredient);
+                    }
+                    //deleted an ingredient
+                    else
+                    {
+                        context.Remove(ingredient);
+                    }                     
                 }
+                if (addEditRecipeViewModel.NewIngredientsName != null)
+                {
+                    foreach (var ingredient in addEditRecipeViewModel.NewIngredientsName)
+                    {
+                        //Created a new ingredient
+                        var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredient, editRecipe.ID);
+                        context.Ingredients.Add(newIngredient);
+                    }
+                }
+                
                 context.SaveChanges();
                 return Redirect("/");
             }

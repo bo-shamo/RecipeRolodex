@@ -35,10 +35,16 @@ namespace RecipeRolodex.ViewModels
         //Hold the possible choices
         public List<SelectListItem> RecipeTypes { get; set; }
 
-        //One Recipe to Many Ingredients relationship
-        //public string[] Ingredients { get; set; }
-        [Required]
+        //Ingredient handlers
+        
+        public IList<int> IngredientsID { get; set; }
+        
+        //public IList<int> RecipeID { get; set; }
+
         public IList<string> IngredientsName { get; set; }
+
+        //[Required]
+        public IList<string> NewIngredientsName { get; set; }
 
         /// <summary>
         /// Creates a blank view model for the intial display form
@@ -59,7 +65,7 @@ namespace RecipeRolodex.ViewModels
         }
 
         /// <summary>
-        /// Creates a recipe object out of the view Model
+        /// For http post request from an edit form
         /// </summary>
         /// <param name="addEditRecipeViewModel"></param>
         /// <returns>recipe object</returns>
@@ -96,10 +102,13 @@ namespace RecipeRolodex.ViewModels
         public static AddEditRecipeViewModel ConvertToViewModel(IList<Ingredient> recipe)
         {
 
-            IList<string> IngredientList = new List<string>();
-            foreach(Ingredient ingredient in recipe)
+            IList<int> ingredientID = new List<int>();
+            IList<string> ingredientName = new List<string>();
+            foreach (Ingredient ingredient in recipe)
             {
-                IngredientList.Add(ingredient.Name);
+                ingredientID.Add(ingredient.ID);
+                ingredientName.Add(ingredient.Name);
+
             }
 
             //Put it all in the ViewModel
@@ -112,7 +121,8 @@ namespace RecipeRolodex.ViewModels
                 Time = recipe[0].Recipe.Time,
                 Serve = recipe[0].Recipe.Serve,
                 Source = recipe[0].Recipe.Source,
-                IngredientsName = IngredientList
+                IngredientsID = ingredientID,
+                IngredientsName = ingredientName
             };
             return viewModel;
         }
