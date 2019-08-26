@@ -35,15 +35,13 @@ namespace RecipeRolodex.ViewModels
         //Hold the possible choices
         public List<SelectListItem> RecipeTypes { get; set; }
 
-        //Ingredient handlers
-        
+        //Ingredient Class handlers
+        //Stores ingredient id for edit view
         public IList<int> IngredientsID { get; set; }
-        
-        //public IList<int> RecipeID { get; set; }
-
+        //Stores ingredient name for edit view
         public IList<string> IngredientsName { get; set; }
 
-        //[Required]
+        //stores ingredients added by the new javascript rows
         public IList<string> NewIngredientsName { get; set; }
 
         /// <summary>
@@ -85,8 +83,7 @@ namespace RecipeRolodex.ViewModels
             return newrecipe;
         }
 
-        //Creates each individual ingredient, 
-        //TODO: need to find a better way to do this without using strings
+        //Creates each individual ingredient
         public static Ingredient CreateIngredient(string oneIngredient, int recipeID)
         {
             Ingredient ingredient = new Ingredient

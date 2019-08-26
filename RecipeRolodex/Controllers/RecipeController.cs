@@ -53,14 +53,7 @@ namespace RecipeRolodex.Controllers
                 context.SaveChanges();
 
 
-                /*//Make Ingredients
-                //TODO: make better ingredient handler with javascript
-                string[] ingredients = addEditRecipeViewModel.Ingredients.Split(",");
-                foreach (var ingredient in ingredients)
-                {
-                    var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredient, newRecipe.ID);
-                    context.Ingredients.Add(newIngredient);
-                }*/
+                //Make Ingredients
                 foreach (var ingredientName in addEditRecipeViewModel.NewIngredientsName)
                 {
                     var newIngredient = AddEditRecipeViewModel.CreateIngredient(ingredientName, newRecipe.ID);
@@ -83,7 +76,7 @@ namespace RecipeRolodex.Controllers
         /// <returns>the edit form view with data already filled in to the form</returns>
         public IActionResult Edit(int recipeId)
         {
-            
+            // TODO: get recipes a different way than to assume there is an ingredient
             //Get the recipe that is assoitated with the id
             IList<Ingredient> editIngredients = context.Ingredients.Include(p => p.Recipe).Where(p => p.RecipeID == recipeId).ToList();
 
@@ -106,29 +99,32 @@ namespace RecipeRolodex.Controllers
             //Check if edit was successful
             if (ModelState.IsValid)
             {
+                //Converts the ViewModel into a recipe object
                 var editRecipe = AddEditRecipeViewModel.CreateRecipe(addEditRecipeViewModel);
                 context.Recipes.Update(editRecipe);
 
                 //Check ingredients
-
-                //get the old ingredient list
+                //get the old ingredient list to compare
                 IList<Ingredient> prevIngredients = context.Ingredients.Include(p => p.Recipe).Where(p => p.RecipeID == editRecipe.ID).ToList();
-                //Go through each ingredient returned from the form
+
+                //Go through each ingredients from before it was edited
                 foreach (var ingredient in prevIngredients)
                 {
-                    //Three cases
-                    //edited an ingredient
+                    //Two Case
+                    //edited this ingredient
                     if (addEditRecipeViewModel.IngredientsID.Contains(ingredient.ID)){
                         int index = addEditRecipeViewModel.IngredientsID.IndexOf(ingredient.ID);
                         ingredient.Name = addEditRecipeViewModel.IngredientsName[index];
                         context.Update(ingredient);
                     }
-                    //deleted an ingredient
+                    //deleted this ingredient
                     else
                     {
                         context.Remove(ingredient);
                     }                     
                 }
+    
+                //If added to the ingredient list with the JS, I will be under NewIngredientsName IList
                 if (addEditRecipeViewModel.NewIngredientsName != null)
                 {
                     foreach (var ingredient in addEditRecipeViewModel.NewIngredientsName)
