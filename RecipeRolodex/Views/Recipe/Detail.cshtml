@@ -17,20 +17,20 @@
     <p>@Model.Description</p>
 </div>
     
-<table class="table-bordered">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th scope="col">Ingredient</th>
         </tr>
     </thead>
-    <tbody>
+    
         @foreach (var ingredient in Model.Ingredients)
         {
             <tr>
-                <th scope="col">@ingredient.Name</th>
+                <td scope="col">@ingredient.Name</td>
             </tr>
         }
-    </tbody>
+    
 </table>
 <br/>
 <div class="row">
